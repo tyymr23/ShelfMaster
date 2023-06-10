@@ -19,7 +19,23 @@ class Main(object):
         centerLeftFrame.pack(side=LEFT)
         #center right frame
         centerRightFrame = Frame(centerFrame, width=450, height=700, bg='#e0f0f0', borderwidth=2, relief='sunken')
-        centerRightFrame.pack(side=RIGHT)
+        centerRightFrame.pack()
+
+        #search bar
+        searchBar = LabelFrame(centerRightFrame, width=440, height=75, text='Search Box', bg='#9bc9ff')
+        searchBar.pack(fill=BOTH)
+        #list bar
+        listBar = LabelFrame(centerRightFrame, width=440, height=175, text='List Box', bg='#fcc324')
+        listBar.pack(fill=BOTH)
+        # add book button
+        self.iconbook = PhotoImage(file='icons/add-book.png')
+        self.btnbook = Button(topFrame, text='   Add Book', image=self.iconbook, compound=LEFT, font='arial 12 bold')
+        self.btnbook.pack(side=LEFT, padx=10)
+        # add member button
+        self.iconmember = PhotoImage(file='icons/add-user.png')
+        self.btnmember = Button(topFrame, text='Add Member', font='arial 12 bold', padx=10)
+        self.btnmember.configure(image=self.iconmember, compound=LEFT)
+        self.btnmember.pack(side=LEFT)
 
 
 def main():
