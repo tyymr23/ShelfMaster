@@ -1,5 +1,9 @@
 from tkinter import *
 from tkinter import ttk
+import sqlite3
+
+con = sqlite3.connect('library.db')
+cur = con.cursor()
 
 class Main(object):
     def __init__(self, master):
@@ -70,6 +74,8 @@ class Main(object):
         self.btngive.pack(side=LEFT)
 
 ################################################## Tabs ##################################################
+
+    #tab 1
         self.tabs = ttk.Notebook(centerLeftFrame, width=900, height=660)
         self.tabs.pack()
         self.tab1icon = PhotoImage(file='icons/library2.png')
@@ -81,6 +87,22 @@ class Main(object):
 
         #list books
         self.listBooks = Listbox(self.tab1, width=40, height=30, bd=5, font='times 12 bold')
+        self.scrollbar = Scrollbar(self.tab1, orient=VERTICAL)
+        self.listBooks.grid(row=0, column=0, padx=(10, 0), pady=10, sticky=N)
+        self.scrollbar.config(command=self.listBooks.yview)
+        self.listBooks.config(yscrollcommand=self.scrollbar.set)
+        self.scrollbar.grid(row=0, column=0, sticky=N+S+E)
+        #list details
+        self.listDetails = Listbox(self.tab1, width=80, height=30, bd=5, font='times 12 bold')
+        self.listDetails.grid(row=0, column=1, padx=(10, 0), pady=10, sticky=N)
+
+    #tab 2
+        self.labelBookCount = Label(self.tab2, text='', pady=20, font='verdana 14 bold')
+        self.labelBookCount.grid(row=0)
+        self.labelMemberCount = Label(self.tab2, text='', pady=20, font='verdana 14 bold')
+        self.labelMemberCount.grid(row=1, sticky=W)
+        self.labelTakenCount = Label(self.tab2, text='', pady=20, font='verdana 14 bold')
+        self.labelTakenCount.grid(row=2, sticky=W)
 
 
 def main():
