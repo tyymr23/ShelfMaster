@@ -24,18 +24,63 @@ class Main(object):
         #search bar
         searchBar = LabelFrame(centerRightFrame, width=440, height=75, text='Search Box', bg='#9bc9ff')
         searchBar.pack(fill=BOTH)
+        self.labelSearch = Label(searchBar, text='Search : ', font='arial 12 bold', bg='#9bc9ff', fg='white')
+        self.labelSearch.grid(row=0, column=0, padx=20, pady=10)
+        self.entrySearch = Entry(searchBar, width=30, bd=10)
+        self.entrySearch.grid(row=0, column=1, columnspan=3, padx=10, pady=10)
+        self.btnsearch = Button(searchBar, text='Search', font='arial 12', bg='#fcc324', fg='white')
+        self.btnsearch.grid(row=0, column=4, padx=20, pady=10)
+
         #list bar
         listBar = LabelFrame(centerRightFrame, width=440, height=175, text='List Box', bg='#fcc324')
         listBar.pack(fill=BOTH)
+        self.labelList = Label(listBar, text='Short By', font='times 16 bold', fg='#2488ff', bg='#fcc324')
+        self.labelList.grid(row=0, column=2)
+        self.listChoice = IntVar()
+        rb1 = Radiobutton(listBar, text='All Books', var=self.listChoice, value=1, bg='#fcc324')
+        rb2 = Radiobutton(listBar, text='In Library', var=self.listChoice, value=2, bg='#fcc324')
+        rb3 = Radiobutton(listBar, text='Borrowed Books', var=self.listChoice, value=3, bg='#fcc324')
+        rb1.grid(row=1, column=0)
+        rb2.grid(row=1, column=1)
+        rb3.grid(row=1, column=2)
+        btnList = Button(listBar, text='List Books', bg='#2488ff', fg='white', font='arial 12')
+        btnList.grid(row=1, column=3, padx=40, pady=10)
+
+        #title and image
+        imageBar = Frame(centerRightFrame, width=440, height=350)
+        imageBar.pack(fill=BOTH)
+        self.titleRight = Label(imageBar, text='Welcome to our Library', font='arial 16 bold')
+        self.titleRight.grid(row=0)
+        self.imageLibrary = PhotoImage(file='icons/library.png')
+        self.labelImage = Label(imageBar, image=self.imageLibrary)
+        self.labelImage.grid(row=1)
+
+################################################## Tool Bar ##################################################
         # add book button
         self.iconbook = PhotoImage(file='icons/add-book.png')
         self.btnbook = Button(topFrame, text='   Add Book', image=self.iconbook, compound=LEFT, font='arial 12 bold')
-        self.btnbook.pack(side=LEFT, padx=10)
+        self.btnbook.pack(side=LEFT, padx=0)
         # add member button
         self.iconmember = PhotoImage(file='icons/add-user.png')
-        self.btnmember = Button(topFrame, text='Add Member', font='arial 12 bold', padx=10)
-        self.btnmember.configure(image=self.iconmember, compound=LEFT)
-        self.btnmember.pack(side=LEFT)
+        self.btnmember = Button(topFrame, text='Add Member', font='arial 12 bold', padx=10, image=self.iconmember, compound=LEFT)
+        self.btnmember.pack(side=LEFT, padx=10)
+        #give book button
+        self.icongive = PhotoImage(file='icons/give-book.png')
+        self.btngive = Button(topFrame, text='Give Book', font='arial 12 bold', padx=10, image=self.icongive, compound=LEFT)
+        self.btngive.pack(side=LEFT)
+
+################################################## Tabs ##################################################
+        self.tabs = ttk.Notebook(centerLeftFrame, width=900, height=660)
+        self.tabs.pack()
+        self.tab1icon = PhotoImage(file='icons/library2.png')
+        self.tab2icon = PhotoImage(file='icons/statistics.png')
+        self.tab1 = ttk.Frame(self.tabs)
+        self.tab2 = ttk.Frame(self.tabs)
+        self.tabs.add(self.tab1, text='Library Management', image=self.tab1icon, compound=LEFT)
+        self.tabs.add(self.tab2, text='Statistics', image=self.tab2icon, compound=LEFT)
+
+        #list books
+        self.listBooks = Listbox(self.tab1, width=40, height=30, bd=5, font='times 12 bold')
 
 
 def main():
