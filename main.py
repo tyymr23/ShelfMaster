@@ -59,7 +59,7 @@ class Main(object):
         self.labelSearch.grid(row=0, column=0, padx=20, pady=10)
         self.entrySearch = Entry(searchBar, width=30, bd=10)
         self.entrySearch.grid(row=0, column=1, columnspan=3, padx=10, pady=10)
-        self.btnsearch = Button(searchBar, text='Search', font='arial 12', bg='#fcc324', fg='white')
+        self.btnsearch = Button(searchBar, text='Search', font='arial 12', bg='#fcc324', fg='white', command=self.searchBooks)
         self.btnsearch.grid(row=0, column=4, padx=20, pady=10)
 
         #list bar
@@ -139,6 +139,14 @@ class Main(object):
 
     def addMember(self):
         member = addmember.AddMember()
+
+    def searchBooks(self):
+        value = self.entrySearch.get()
+        search = cur.execute("SELECT * FROM books WHERE book_name LIKE ?", ('%'+value+'%', )).fetchall()
+        self.listBooks.delete(0, END)
+        count = 0
+        for book in search:
+            self.listBooks.insert(count, str(book[0])+"-"+book[1])
 
 def main():
     root = Tk()
