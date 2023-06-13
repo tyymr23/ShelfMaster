@@ -11,6 +11,14 @@ class Main(object):
     def __init__(self, master):
         self.master = master
 
+        def displayStatistics(event):
+            countBooks = cur.execute("SELECT count(book_id) FROM books").fetchall()
+            countMembers = cur.execute("SELECT count(member_id) FROM members").fetchall()
+            takenBooks = cur.execute("SELECT count(status) FROM books WHERE status=1").fetchall()
+            self.labelBookCount.config(text='Total :' + str(countBooks[0][0])+' books in library')
+            self.labelMemberCount.config(text='Total member :' + str(countMembers[0][0]))
+            self.labelTakenCount.config(text='Taken books :' + str(takenBooks[0][0]))
+
         def displayBooks(self):
             books = cur.execute("SELECT * FROM books").fetchall()
             count = 0
@@ -34,6 +42,7 @@ class Main(object):
                     self.listDetails.insert(4, 'Status: Unavailable')
 
             self.listBooks.bind('<<ListboxSelect>>', bookInfo)
+            self.tabs.bind('<<NotebookTabChange>>', displayStatistics)
 
 
         #frames
@@ -74,7 +83,7 @@ class Main(object):
         rb1.grid(row=1, column=0)
         rb2.grid(row=1, column=1)
         rb3.grid(row=1, column=2)
-        btnList = Button(listBar, text='List Books', bg='#2488ff', fg='white', font='arial 12')
+        btnList = Button(listBar, text='List Books', bg='#2488ff', fg='white', font='arial 12', command=self.list_books)
         btnList.grid(row=1, column=3, padx=40, pady=10)
 
         #title and image
@@ -133,6 +142,7 @@ class Main(object):
 
     #functions
         displayBooks(self)
+        displayStatistics(self)
 
     def addBook(self):
         add = addbook.AddBook()
@@ -147,6 +157,33 @@ class Main(object):
         count = 0
         for book in search:
             self.listBooks.insert(count, str(book[0])+"-"+book[1])
+
+    def list_books(self):
+        value = self.listChoice.get()
+        if value == 1:
+            allbooks = cur.execute("SELECT * FROM books").fetchall()
+            self.listBooks.delete(0, END)
+
+            count = 0
+            for book in allbooks:
+                self.listBooks.insert(count, str(book[0])+"-"+book[1])
+                count += 1
+        elif value == 2:
+            booksInLibrary = cur.execute("SELECT * FROM books WHERE status =?", (0,)).fetchall()
+            self.listBooks.delete(0, END)
+
+            count = 0
+            for book in booksInLibrary:
+                self.listBooks.insert(count, str(book[0])+"-"+book[1])
+                count += 1
+        else:
+            takenBooks = cur.execute("SELECT * FROM books WHERE status =?", (1,)).fetchall()
+            self.listBooks.delete(0, END)
+
+            count = 0
+            for book in takenBooks:
+                self.listBooks.insert(count, str(book[0])+"-"+book[1])
+                count += 1
 
 def main():
     root = Tk()
