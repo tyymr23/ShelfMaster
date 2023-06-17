@@ -1,7 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 import sqlite3
-import addbook, addmember
+import addbook, addmember, givebook
+from tkinter import messagebox
 
 con = sqlite3.connect('library.db')
 cur = con.cursor()
@@ -112,7 +113,7 @@ class Main(object):
         self.btnmember.pack(side=LEFT, padx=2.5)
         #give book
         self.icongive = PhotoImage(file='icons/give-book.png')
-        self.btngive = Button(topFrame, text='Give Book', image=self.icongive, compound=LEFT, font='arial 12 bold', padx=10)
+        self.btngive = Button(topFrame, text='Give Book', image=self.icongive, compound=LEFT, font='arial 12 bold', padx=10, command=self.giveBook)
         self.btngive.pack(side=LEFT, padx=2.5)
 
 ################################ Tabs ##########################################
@@ -186,6 +187,9 @@ class Main(object):
                 self.list_books.insert(count, str(book[0])+'-'+book[1])
                 count += 1
 
+    def giveBook(self):
+        give_book = givebook.GiveBook()
+
 class GiveBook(Toplevel):
     def __init__(self):
         Toplevel.__init__(self)
@@ -236,8 +240,24 @@ class GiveBook(Toplevel):
         self.combo_member['values'] = member_list
         self.combo_member.place(x=150, y=85)
         #button
-        button = Button(self.bottomFrame, text='Lend Book')
-        button.place(x=270, y=120)
+        button = Button(self.bottomFrame, text='Lend Book', command=self.lendBook)
+        button.place(x=220, y=120)
+
+    def lendBook(self):
+        book_name = self.book_name.get()
+        member_name = self.member_name.get()
+        if book_name and member_name != '':
+            try:
+                query = "INSERT INTO 'borrows' (bbook_id, bmember_id) VALUES(?,?)"
+                cur.execute(query, (book_name, member_name))
+                con.commit()
+                messagebox.showinfo('Success', 'Succesfully added to database!', icon='info')
+                cur.execute('UPDATE books SET status=? WHERE book_id=?', (1,self.book_id))
+                con.commit()
+            except:
+                messagebox.showerror('Error', 'Cannot add to database', icon='warning')
+        else:
+            messagebox.showerror('Error', 'Fields cannot be empty.', icon='warning')
 
 def main():
     root = Tk()
