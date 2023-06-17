@@ -9,8 +9,8 @@ cur = con.cursor()
 class GiveBook(Toplevel):
     def __init__(self):
         Toplevel.__init__(self)
-        self.geometry('650x750+550+200')
-        self.title('Lend Book')
+        self.geometry('650x750+450+50')
+        self.title('Borrow Book')
         self.resizable(False, False)
         query = 'SELECT * FROM books WHERE status=0'
         books = cur.execute(query).fetchall()
@@ -31,10 +31,10 @@ class GiveBook(Toplevel):
         self.bottomFrame = Frame(self, height=600, bg='#fcc324')
         self.bottomFrame.pack(fill=X)
         #heading, image
-        self.top_image = PhotoImage(file='icons/add-user-big.png')
+        self.top_image = PhotoImage(file='icons/give-book-big.png')
         top_image_lbl = Label(self.topFrame, image=self.top_image, bg='white')
         top_image_lbl.place(x=120, y=10)
-        heading = Label(self.topFrame, text='Lend Book', font='arial 22 bold', fg='#003f8a', bg='white')
+        heading = Label(self.topFrame, text='Borrow Book', font='arial 22 bold', fg='#003f8a', bg='white')
         heading.place(x=290, y=60)
 
         ##################### entries and labels #################################
@@ -53,7 +53,7 @@ class GiveBook(Toplevel):
         self.combo_member['values'] = member_list
         self.combo_member.place(x=150, y=85)
         #button
-        button = Button(self.bottomFrame, text='Lend Book', command=self.lendBook)
+        button = Button(self.bottomFrame, text='Borrow Book', command=self.lendBook)
         button.place(x=220, y=120)
 
     def lendBook(self):

@@ -7,7 +7,7 @@ cur = con.cursor()
 class AddBook(Toplevel):
     def __init__(self):
         Toplevel.__init__(self)
-        self.geometry('650x750+500+200')
+        self.geometry('650x750+450+50')
         self.title('Add Book')
         self.resizable(False, False)
 
