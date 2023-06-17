@@ -32,7 +32,7 @@ class AddMember(Toplevel):
         self.ent_name = Entry(self.bottomFrame, width=30, bd=4)
         self.ent_name.insert(0, 'Please enter name')
         self.ent_name.place(x=150, y=45)
-        #author
+        #phone
         self.lbl_phone = Label(self.bottomFrame, text='Phone :', font='arial 15 bold', fg='white', bg='#fcc324')
         self.lbl_phone.place(x=40, y=80)
         self.ent_phone = Entry(self.bottomFrame, width=30, bd=4)
